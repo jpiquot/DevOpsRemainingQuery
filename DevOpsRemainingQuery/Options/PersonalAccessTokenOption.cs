@@ -17,7 +17,7 @@ namespace DevOpsRemainingQuery
         /// <param name="defaultValues">The default values.</param>
         public PersonalAccessTokenOption(IOptions<QuerySettings> defaultValues)
             : base(
-                  new[] { "--pat"},
+                  new[] { "--personal-access-token", "-pat"},
                   () => defaultValues.Value.PersonalAccessToken??"",
                   "The personal access token to use for authetication. If not set, Windows authetication will be used.")
         {

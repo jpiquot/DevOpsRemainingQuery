@@ -11,13 +11,13 @@ namespace DevOpsRemainingQuery.DevOps
     internal class DevOpsServer : IDisposable
     {
         private readonly string _serverUrl;
-        private readonly string _pat;
+        private readonly string _personalAccessToken;
         private VssConnection? _connection;
 
-        public DevOpsServer(string serverUrl, string pat)
+        public DevOpsServer(string serverUrl, string personalAccessToken)
         {
             _serverUrl = serverUrl;
-            _pat = pat;
+            _personalAccessToken = personalAccessToken;
         }
 
         public VssConnection Connection { get => _connection ?? throw new Exception("The connection has not been initialized.");}
@@ -25,13 +25,13 @@ namespace DevOpsRemainingQuery.DevOps
         public void Connect ()
         {
             VssCredentials credentials;
-            if (string.IsNullOrWhiteSpace(_pat))
+            if (string.IsNullOrWhiteSpace(_personalAccessToken))
             {
                 credentials = new VssCredentials();
             }
             else
             {
-                credentials = new VssBasicCredential(string.Empty, _pat);
+                credentials = new VssBasicCredential(string.Empty, _personalAccessToken);
             }
 
             // Connect to Azure DevOps Services
