@@ -24,15 +24,13 @@ namespace DevOpsRemainingQuery
             AddGlobalOption(new QueryOption(defaultValues));
             AddGlobalOption(new PersonalAccessTokenOption(defaultValues));
 
-            Handler = CommandHandler.Create<IHost, QueryCommandOptions>((host, options) =>
+            Handler = CommandHandler.Create<IHost, QueryCommandOptions>(async (host, options) =>
             {
-                new QueryCommandHandler(
+                await new QueryCommandHandler(
                         host.Services,
                         options
                     )
-                    .InvokeAsync(host.Services.GetRequiredService<InvocationContext>())
-                    .GetAwaiter()
-                    .GetResult();
+                    .InvokeAsync(host.Services.GetRequiredService<InvocationContext>());
             });
         }
     }

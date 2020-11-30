@@ -8,6 +8,7 @@ using DevOpsRemainingQuery.DevOps;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace DevOpsRemainingQuery
 {
@@ -38,8 +39,12 @@ namespace DevOpsRemainingQuery
             screen.Render();
             try
             {
-                using DevOpsServer server = new DevOpsServer(Options.Server??"", Options.PersonalAccessToken??"");
+                using DevOpsServer server = new DevOpsServer(Options.Server ?? "", Options.PersonalAccessToken ?? "");
                 server.Connect();
+                var project = new DevOpsProject(server, Options.Project ?? "");
+                var id = project.Id;
+                var query = new DevOpsQuery(server, project, Options.Query ?? "");
+                var result = await query.GetQueryHierarchyItem();
                 await Task.Delay(5000);
             }
             catch (Exception e)
