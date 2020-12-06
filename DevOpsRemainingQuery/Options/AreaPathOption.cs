@@ -1,11 +1,11 @@
-﻿using System.CommandLine;
-
-using Microsoft.Extensions.Options;
-
-namespace DevOpsRemainingQuery
+﻿namespace DevOpsRemainingQuery
 {
+    using System.CommandLine;
+
+    using Microsoft.Extensions.Options;
+
     /// <summary>
-    /// Area path Option. Implements the <see cref="Option{Int32}"/>
+    /// Area path Option. Implements the <see cref="Option{Int32}"/>.
     /// </summary>
     /// <seealso cref="Option{Int32}"/>
     internal class AreaPathOption : Option<string>

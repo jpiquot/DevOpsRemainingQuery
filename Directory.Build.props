@@ -4,6 +4,8 @@
 		<Nullable>enable</Nullable>
 		<LangVersion>preview</LangVersion>
 		<Version>0.1.0-preview</Version>
-		<AnalysisLevel>latest</AnalysisLevel>
+		<AnalysisLevel>preview</AnalysisLevel>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
 	</PropertyGroup>
 </Project>
