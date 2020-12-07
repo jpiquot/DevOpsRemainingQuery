@@ -1,10 +1,17 @@
 ﻿namespace DevOpsRemainingQuery
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Query command options.
     /// </summary>
     public class QueryCommandOptions
     {
+        /// <summary>
+        /// Gets or sets the task activity order.
+        /// </summary>
+        public List<string>? ActivityOrder { get; set; }
+
         /// <summary>
         /// Gets or sets the area path. If defined, the query will be filtered by this area path.
         /// </summary>

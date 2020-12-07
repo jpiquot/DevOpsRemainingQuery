@@ -28,6 +28,7 @@
             AddGlobalOption(new ProjectOption(defaultValues));
             AddGlobalOption(new QueryOption(defaultValues));
             AddGlobalOption(new PersonalAccessTokenOption(defaultValues));
+            AddGlobalOption(new ActivityOrderOption(defaultValues));
 
             Handler = CommandHandler.Create<IHost, QueryCommandOptions>(async (host, options) =>
             {

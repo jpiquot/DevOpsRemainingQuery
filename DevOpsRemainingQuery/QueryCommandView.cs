@@ -1,6 +1,7 @@
 ﻿namespace DevOpsRemainingQuery
 {
     using System;
+    using System.Collections.Generic;
     using System.CommandLine.Rendering;
     using System.CommandLine.Rendering.Views;
     using System.Reflection;
@@ -57,6 +58,7 @@
             Add(new ContentView(Span($"Area path:       {options.AreaPath?.DarkGrey()}")));
             Add(new ContentView(Span($"Iteration path:  {options.IterationPath?.ToString().DarkGrey()}")));
             Add(new ContentView(Span($"Authentication:  {authentication.DarkGrey()}")));
+            Add(new ContentView(Span($"Activity order:  {string.Join(',', options.ActivityOrder ?? new List<string>()).DarkGrey()}")));
             Add(new ContentView("\n"));
             Formatter.AddFormatter<DateTime>(d => $"{d:d} {ForegroundColorSpan.DarkGray()}{d:t}");
         }

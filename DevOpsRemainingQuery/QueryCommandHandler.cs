@@ -1,6 +1,7 @@
 ﻿namespace DevOpsRemainingQuery
 {
     using System;
+    using System.Collections.Generic;
     using System.CommandLine.Invocation;
     using System.CommandLine.Rendering;
     using System.CommandLine.Rendering.Views;
@@ -87,7 +88,7 @@
                 server.Connect();
                 var project = new Project(server, Options.Project ?? string.Empty);
                 var id = project.Id;
-                using var query = new Query(project, Options.Query ?? string.Empty);
+                using var query = new EffortQuery(project, Options.Query ?? string.Empty, Options.ActivityOrder ?? new List<string>());
                 var export = new Export(query);
                 await export.ToFile(Options.OutputFile ?? throw new FileNotFoundException("File name not defined."));
             }
