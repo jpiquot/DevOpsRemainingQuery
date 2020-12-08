@@ -88,7 +88,7 @@
                 server.Connect();
                 var project = new Project(server, Options.Project ?? string.Empty);
                 var id = project.Id;
-                using var query = new EffortQuery(project, Options.Query ?? string.Empty, Options.ActivityOrder ?? new List<string>());
+                using var query = new EffortQuery(project, Options.Query ?? string.Empty, Options.ActivityOrder ?? new List<string>(), Options.ParentDepth ?? 0);
                 var export = new Export(query);
                 await export.ToFile(Options.OutputFile ?? throw new FileNotFoundException("File name not defined."));
             }

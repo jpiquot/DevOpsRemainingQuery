@@ -50,15 +50,17 @@
             Add(new ContentView("\n"));
             Add(new ContentView(Span($"DevOps Remaining Work Query V{Assembly.GetExecutingAssembly().GetName().Version}".Orange())));
             Add(new ContentView(Span($"Jérôme Piquot".DarkOrange())));
+            Add(new ContentView(Span($"Use the --help option for more informations.".DarkGrey())));
             Add(new ContentView("\n"));
-            Add(new ContentView(Span($"Server:          {options.Server?.DarkGrey()}")));
-            Add(new ContentView(Span($"Project:         {options.Project?.DarkGrey()}")));
-            Add(new ContentView(Span($"Query:           {options.Query?.DarkGrey()}")));
-            Add(new ContentView(Span($"Ouput file:      {options.OutputFile?.DarkGrey()}")));
-            Add(new ContentView(Span($"Area path:       {options.AreaPath?.DarkGrey()}")));
-            Add(new ContentView(Span($"Iteration path:  {options.IterationPath?.ToString().DarkGrey()}")));
-            Add(new ContentView(Span($"Authentication:  {authentication.DarkGrey()}")));
-            Add(new ContentView(Span($"Activity order:  {string.Join(',', options.ActivityOrder ?? new List<string>()).DarkGrey()}")));
+            Add(new ContentView(Span($"Server:           {options.Server?.DarkGrey()}")));
+            Add(new ContentView(Span($"Project:          {options.Project?.DarkGrey()}")));
+            Add(new ContentView(Span($"Query:            {options.Query?.DarkGrey()}")));
+            Add(new ContentView(Span($"Ouput file:       {options.OutputFile?.DarkGrey()}")));
+            Add(new ContentView(Span($"Area path:        {options.AreaPath?.DarkGrey()}")));
+            Add(new ContentView(Span($"Iteration path:   {options.IterationPath?.DarkGrey()}")));
+            Add(new ContentView(Span($"Authentication:   {authentication.DarkGrey()}")));
+            Add(new ContentView(Span($"Activity order:   {string.Join(',', options.ActivityOrder ?? new List<string>()).DarkGrey()}")));
+            Add(new ContentView(Span($"Parent max depth: {options.ParentDepth?.ToString().DarkGrey()}")));
             Add(new ContentView("\n"));
             Formatter.AddFormatter<DateTime>(d => $"{d:d} {ForegroundColorSpan.DarkGray()}{d:t}");
         }

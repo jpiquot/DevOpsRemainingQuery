@@ -37,6 +37,12 @@
         public string? OutputFile { get; set; }
 
         /// <summary>
+        /// Gets or sets the maximum parent hierarchy depth.
+        /// </summary>
+        /// <value>The maximum parent hierarchy depth.</value>
+        public int? ParentDepth { get; set; }
+
+        /// <summary>
         /// Gets or sets the personal access token.
         /// </summary>
         /// <value>The personal access token.</value>

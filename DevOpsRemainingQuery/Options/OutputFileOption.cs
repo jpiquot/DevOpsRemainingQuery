@@ -5,9 +5,9 @@
     using Microsoft.Extensions.Options;
 
     /// <summary>
-    /// Output directory Option. Implements the <see cref="Option{Int32}"/>.
+    /// Output directory Option. Implements the <see cref="Option{String}"/>.
     /// </summary>
-    /// <seealso cref="Option{Int32}"/>
+    /// <seealso cref="Option{String}"/>
     internal class OutputFileOption : Option<string>
     {
         /// <summary>

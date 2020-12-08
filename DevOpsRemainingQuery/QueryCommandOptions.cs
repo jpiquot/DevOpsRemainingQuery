@@ -29,6 +29,12 @@
         public string? OutputFile { get; set; }
 
         /// <summary>
+        /// Gets or sets the maximum parent hierarchy depth.
+        /// </summary>
+        /// <value>The maximum parent hierarchy depth.</value>
+        public int? ParentDepth { get; set; }
+
+        /// <summary>
         /// Gets or sets the PAT to use for credentials. If not set, Windows authentication will be used.
         /// </summary>
         public string? PersonalAccessToken { get; set; }
