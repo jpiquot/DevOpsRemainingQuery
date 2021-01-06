@@ -31,12 +31,14 @@
         /// Export to a file.
         /// </summary>
         /// <param name="fileName">The output file name.</param>
+        /// <param name="cultureName">The culture name for the CSV file format. If not defined, takes the current culture.</param>
         /// <param name="withHeaders">Add column headers in the first line of the file.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task ToFile(string fileName, bool withHeaders = true)
+        public async Task ToFile(string fileName, string? cultureName = null, bool withHeaders = true)
         {
             var data = await this.query.GetData();
-            var conf = new CsvConfiguration(CultureInfo.CurrentCulture)
+            var culture = (cultureName == null) ? CultureInfo.CurrentCulture : new CultureInfo(cultureName);
+            var conf = new CsvConfiguration(culture)
             {
                 Encoding = Encoding.Unicode,
             };

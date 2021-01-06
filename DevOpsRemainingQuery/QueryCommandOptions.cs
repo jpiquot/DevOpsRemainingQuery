@@ -53,5 +53,11 @@
         /// Gets or sets the URL of the DevOps server.
         /// </summary>
         public string? Server { get; set; }
+
+        /// <summary>
+        /// Gets or sets the culture.
+        /// </summary>
+        public string? Culture { get; set; }
+
     }
 }

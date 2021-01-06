@@ -56,6 +56,7 @@
             Add(new ContentView(Span($"Project:          {options.Project?.DarkGrey()}")));
             Add(new ContentView(Span($"Query:            {options.Query?.DarkGrey()}")));
             Add(new ContentView(Span($"Ouput file:       {options.OutputFile?.DarkGrey()}")));
+            Add(new ContentView(Span($"Culture:          {options.Culture?.DarkGrey()}")));
             Add(new ContentView(Span($"Area path:        {options.AreaPath?.DarkGrey()}")));
             Add(new ContentView(Span($"Iteration path:   {options.IterationPath?.DarkGrey()}")));
             Add(new ContentView(Span($"Authentication:   {authentication.DarkGrey()}")));
