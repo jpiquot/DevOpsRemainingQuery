@@ -136,8 +136,15 @@
                 return new List<WorkItem>();
             }
 
+            var list = new List<WorkItem>(ids.Length);
+            for (int i = 0; i <= ids.Length / 200; i++)
+            {
+                var idsTrunk = ids.Skip(i * 200).Take(200);
+                list.AddRange(await WitClient.GetWorkItemsAsync(idsTrunk, null, result.AsOf, WorkItemExpand.All));
+            }
+
             // get work items for the ids found in query
-            return await WitClient.GetWorkItemsAsync(ids, null, result.AsOf, WorkItemExpand.All);
+            return list;
         }
 
         /// <summary>

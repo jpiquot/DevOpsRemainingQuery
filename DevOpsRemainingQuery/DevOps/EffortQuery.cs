@@ -59,8 +59,24 @@
                     record.Add(value);
                 }
 
-                await AddEffortValues(record, wi);
-                await AddParentHierarchyValues(record, wi);
+                try
+                {
+                    await AddEffortValues(record, wi);
+                }
+                catch
+                {
+                    Console.WriteLine($"Error getting effort values from WI:{wi.Id}.");
+                }
+
+                try
+                {
+                    await AddParentHierarchyValues(record, wi);
+                }
+                catch
+                {
+                    Console.WriteLine($"Error getting hierarchy values from WI:{wi.Id}.");
+                }
+
                 records.Add(record);
             }
 
@@ -100,6 +116,11 @@
         private static List<int> GetLinkedWorkItemIds(WorkItem workItem, string relationType)
         {
             var list = new List<int>();
+            if (workItem.Relations == null)
+            {
+                return list;
+            }
+
             foreach (string url in workItem
                                     .Relations
                                     .Where(p => p.Rel == relationType)
@@ -132,35 +153,47 @@
         {
             var childRelType = (childRelationType ?? await GetChildRelationType()).ReferenceName;
             var fieldNames = GetTaskFieldReferenceNames();
-            var wis = await WitClient.GetWorkItemsAsync(GetLinkedWorkItemIds(workItem, childRelType), null, null, WorkItemExpand.Fields);
-            var tasks = wis
-                .Where(p => p.Fields.ContainsKey(WorkItemFieldType.Activity) && p.Fields.ContainsKey(WorkItemFieldType.WorkItemType) && p.Fields[WorkItemFieldType.WorkItemType] as string == WorkItemType.Task)
-                .Select(p => new Effort
-                {
-                    Activity = p.Fields[WorkItemFieldType.Activity] as string ?? string.Empty,
-                    OriginalEstimate = p.Fields.ContainsKey(WorkItemFieldType.OriginalEstimate) ? p.Fields[WorkItemFieldType.OriginalEstimate] as double? ?? 0 : 0,
-                    RemainingWork = p.Fields.ContainsKey(WorkItemFieldType.RemainingWork) ? p.Fields[WorkItemFieldType.RemainingWork] as double? ?? 0 : 0,
-                    CompletedWork = p.Fields.ContainsKey(WorkItemFieldType.CompletedWork) ? p.Fields[WorkItemFieldType.CompletedWork] as double? ?? 0 : 0,
-                })
-                .GroupBy(p => p.Activity)
-                .Select(p => new Effort
-                {
-                    Activity = p.Key,
-                    OriginalEstimate = p.Sum(q => q.OriginalEstimate),
-                    RemainingWork = p.Sum(q => q.RemainingWork),
-                    CompletedWork = p.Sum(q => q.CompletedWork),
-                })
-                .ToList();
-            record.AddRange(new object[] { tasks.Sum(p => p.OriginalEstimate), tasks.Sum(p => p.RemainingWork), tasks.Sum(p => p.CompletedWork) });
-            foreach (var activity in (activityCollection ?? await GetOrderedActivityList()).Activities)
+            var linkedWi = GetLinkedWorkItemIds(workItem, childRelType);
+            if (linkedWi.Count > 0)
             {
-                var query = tasks.Where(p => p.Activity == activity);
-                if (query.Any())
+                var wis = await WitClient.GetWorkItemsAsync(linkedWi, null, null, WorkItemExpand.Fields);
+                var tasks = wis
+                    .Where(p => p.Fields.ContainsKey(WorkItemFieldType.Activity) && p.Fields.ContainsKey(WorkItemFieldType.WorkItemType) && p.Fields[WorkItemFieldType.WorkItemType] as string == WorkItemType.Task)
+                    .Select(p => new Effort
+                    {
+                        Activity = p.Fields[WorkItemFieldType.Activity] as string ?? string.Empty,
+                        OriginalEstimate = p.Fields.ContainsKey(WorkItemFieldType.OriginalEstimate) ? p.Fields[WorkItemFieldType.OriginalEstimate] as double? ?? 0 : 0,
+                        RemainingWork = p.Fields.ContainsKey(WorkItemFieldType.RemainingWork) ? p.Fields[WorkItemFieldType.RemainingWork] as double? ?? 0 : 0,
+                        CompletedWork = p.Fields.ContainsKey(WorkItemFieldType.CompletedWork) ? p.Fields[WorkItemFieldType.CompletedWork] as double? ?? 0 : 0,
+                    })
+                    .GroupBy(p => p.Activity)
+                    .Select(p => new Effort
+                    {
+                        Activity = p.Key,
+                        OriginalEstimate = p.Sum(q => q.OriginalEstimate),
+                        RemainingWork = p.Sum(q => q.RemainingWork),
+                        CompletedWork = p.Sum(q => q.CompletedWork),
+                    })
+                    .ToList();
+                record.AddRange(new object[] { tasks.Sum(p => p.OriginalEstimate), tasks.Sum(p => p.RemainingWork), tasks.Sum(p => p.CompletedWork) });
+                foreach (var activity in (activityCollection ?? await GetOrderedActivityList()).Activities)
                 {
-                    var effort = query.Single();
-                    record.AddRange(new object[] { effort.OriginalEstimate, effort.RemainingWork, effort.CompletedWork });
+                    var query = tasks.Where(p => p.Activity == activity);
+                    if (query.Any())
+                    {
+                        var effort = query.Single();
+                        record.AddRange(new object[] { effort.OriginalEstimate, effort.RemainingWork, effort.CompletedWork });
+                    }
+                    else
+                    {
+                        record.AddRange(new object[] { 0, 0, 0 });
+                    }
                 }
-                else
+            }
+            else
+            {
+                record.AddRange(new object[] { 0, 0, 0 });
+                foreach (var activity in (activityCollection ?? await GetOrderedActivityList()).Activities)
                 {
                     record.AddRange(new object[] { 0, 0, 0 });
                 }
